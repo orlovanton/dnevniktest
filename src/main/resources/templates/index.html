@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>Загрузка Excel документа</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Тестовое задание 1</h1>
+    <div class="alert alert-danger" role="alert" th:if="${not #lists.isEmpty(errors)}">Документ не загружен</div>
+    <div th:each="error,iterationStatus:${errors}">
+        <div class="alert alert-danger" role="alert" th:text="${error.message}"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="POST" enctype="multipart/form-data"
+                  th:action="@{/upload}" id="file-upload-form">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input type="file" name="file" id="file"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul>
+                <li>Документ должен быть в формате .xlsx</li>
+                <li>Документ должен имееть четыре колонки: Код,Наименование, Цена, Дата</li>
+                <li>Все ячейки строки товара должны быть заполнены</li>
+                <li>Пустые строки не допускаются</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div th:if="${#lists.isEmpty(documents)}">
+                <div class="alert alert-warning" role="alert">Нет загруженных документов</div>
+            </div>
+            <table class="table table-striped" th:if="${not #lists.isEmpty(documents)}">
+                <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Документ</td>
+                    <td>Дата загрузки</td>
+                </tr>
+                </thead>
+                <tr th:each="document,iterationStatus  : ${documents}">
+                    <td th:text="${iterationStatus.count}">1</td>
+                    <td><a th:href="@{'/document/{id}'(id=${document.id})}" th:text="${document.name}"></a></td>
+                    <td th:text="${#dates.format(document.uploadDate, 'dd/MMM/yyyy HH:mm')}">Name</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("file").onchange = function() {
+        document.getElementById("file-upload-form").submit();
+    };
+</script>
+</body>
+</html>

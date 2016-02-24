@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>Документы - главная</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Документ <small th:text="${document.name}"></small></h1>
+        <h6 th:text="${#dates.format(document.uploadDate, 'dd/MMM/yyyy HH:mm')}"></h6>
+    </div>
+    <a th:href="@{/}" class="btn btn-primary btn-lg">Назад</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Документ</td>
+            <td>Дата загрузки</td>
+        </tr>
+        </thead>
+        <tr th:each="documentRow,iterationStatus  : ${document.documentRows}">
+            <td th:text="${documentRow.code}">1</td>
+            <td th:text="${documentRow.name}">1</td>
+            <td th:text="${documentRow.price}">1</td>
+            <td th:text="${documentRow.date}">1</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
